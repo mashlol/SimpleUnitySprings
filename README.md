@@ -5,10 +5,10 @@ elements in your project, heavily inspired by https://www.react-spring.dev/.
 
 ## Installation
 
-Open your Unity package Manager and press "Add package from git url".
+Open your Unity package Manager, press "Add package from git url" and enter the following URL:
 
 ```
-https://github.com/mashlol/SimpleUnitySprings
+https://github.com/mashlol/SimpleUnitySprings.git
 ```
 
 ## Usage
@@ -116,4 +116,5 @@ Create -> Data -> SpringConfig.
 It's recommended to use a ScriptableObject in your scene to share spring configs
 with multiple springs, as well as to be able to easily edit the configs at 
 runtime to tweak values.
+
 
