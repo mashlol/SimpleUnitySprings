@@ -1,14 +1,19 @@
-public interface ISpring<T> {
+namespace SimpleUnitySprings
+{
 
-    // True means still animating, false means dest reached
-    public bool Tick(float deltaTime);
+    public interface ISpring<T>
+    {
 
-    public ISpring<T> To(T value, float delay = 0f);
+        // True means still animating, false means dest reached
+        public bool Tick(float deltaTime);
 
-    public ISpring<T> Instant(T value);
+        public ISpring<T> To(T value, float delay = 0f);
 
-    public T Get();
+        public ISpring<T> Instant(T value);
 
-    public T GetVelocity();
+        public T Get();
 
+        public T GetVelocity();
+
+    }
 }

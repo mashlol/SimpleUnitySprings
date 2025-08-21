@@ -1,12 +1,17 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "SpringConfig", menuName = "Data/SpringConfig", order = 0)]
-public class SpringConfig : ScriptableObject {
+namespace SimpleUnitySprings
+{
 
-    public float tension = 600;
-    public float friction = 30;
-    public float mass = 1;
+    [CreateAssetMenu(fileName = "SpringConfig", menuName = "Data/SpringConfig", order = 0)]
+    public class SpringConfig : ScriptableObject
+    {
 
-    public float trailDelay = 0.1f;
+        public float tension = 600;
+        public float friction = 30;
+        public float mass = 1;
 
+        public float trailDelay = 0.1f;
+
+    }
 }
