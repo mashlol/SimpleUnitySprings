@@ -114,6 +114,6 @@ runtime with SpringConfig.Create() or as a ScriptableObject in your project via
 Create -> Data -> SpringConfig.
 
 It's recommended to use a ScriptableObject in your scene to share spring configs
-with multiple springs, as well as to be able to easily edit the configs at
-
+with multiple springs, as well as to be able to easily edit the configs at 
 runtime to tweak values.
+
