@@ -28,7 +28,7 @@ namespace SimpleUnitySprings
 
             this.config = config;
             position = from;
-            this.to = to;
+            To(to);
         }
 
         public bool Tick(float deltaTime)
@@ -67,7 +67,7 @@ namespace SimpleUnitySprings
         public ISpring<float> To(float value, float delay = 0f)
         {
             to = value;
-            isAnimating = true;
+            isAnimating = value != position;
             animateStartTime = Time.time;
             this.delay = delay;
             return this;
