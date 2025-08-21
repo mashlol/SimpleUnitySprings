@@ -17,6 +17,8 @@ https://github.com/mashlol/SimpleUnitySprings
 
 The `Spring` class lets you animate a single float value.
 
+[Movie_007.webm](https://github.com/user-attachments/assets/69e450f1-d59a-442d-b9b0-f5e811e56947)
+
 ```C#
 using SimpleUnitySprings;
 using UnityEngine;
@@ -41,6 +43,8 @@ public class MyBehaviour : MonoBehaviour {
 ```
 
 The `Vector3Spring` class lets you animate a Vector3 value.
+
+[Movie_006.webm](https://github.com/user-attachments/assets/96886bf9-8b8c-42b8-8c6a-60a35f738a1e)
 
 ```C#
 using SimpleUnitySprings;
@@ -69,6 +73,8 @@ public class MyBehaviour : MonoBehaviour {
 
 You can pass any Spring into `ChainableSpring` to support chaining, so each
 invocation of `.To` will queue until the previous has completed.
+
+[Movie_004.webm](https://github.com/user-attachments/assets/3862d1d3-dffa-4fd0-ba82-878619f4850f)
 
 ```C#
 using SimpleUnitySprings;
@@ -109,4 +115,5 @@ Create -> Data -> SpringConfig.
 
 It's recommended to use a ScriptableObject in your scene to share spring configs
 with multiple springs, as well as to be able to easily edit the configs at
+
 runtime to tweak values.
