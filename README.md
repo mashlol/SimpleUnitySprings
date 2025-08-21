@@ -15,14 +15,47 @@ https://github.com/mashlol/SimpleUnitySprings
 
 ### Basic usage
 
+The `Spring` class lets you animate a single float value.
+
 ```C#
+using SimpleUnitySprings;
+using UnityEngine;
+
 public class MyBehaviour : MonoBehaviour {
 
-    // Initialize a new Vector3 spring starting at position 0,0,0 and moving to 1,1,1
-    private readonly Vector3Spring spring = new(
-        config: SpringConfig.Create(tension: 600, friction: 30),
-        from: Vector3.zero,
-        to: Vector3.one);
+    private Spring spring;
+
+    private void Start() {
+        spring = new(
+            config: SpringConfig.Create(tension: 600, friction: 3),
+            from: 1,
+            to: 2f);
+    }
+
+    private void Update() {
+        spring.Tick(Time.deltaTime);
+
+        transform.localScale = Vector3.one * spring.Get();
+    }
+}
+```
+
+The `Vector3Spring` class lets you animate a Vector3 value.
+
+```C#
+using SimpleUnitySprings;
+using UnityEngine;
+
+public class MyBehaviour : MonoBehaviour {
+
+    private Vector3Spring spring;
+
+    private void Start() {
+        spring = new(
+            config: SpringConfig.Create(tension: 600, friction: 30),
+            from: new Vector3(-6.5f, -2.2f, -2f),
+            to: new Vector3(6.5f, 4f, -2f));
+    }
 
     private void Update() {
         spring.Tick(Time.deltaTime);
@@ -34,22 +67,30 @@ public class MyBehaviour : MonoBehaviour {
 
 ### Chaining
 
+You can pass any Spring into `ChainableSpring` to support chaining, so each
+invocation of `.To` will queue until the previous has completed.
+
 ```C#
+using SimpleUnitySprings;
+using UnityEngine;
+
 public class MySpringChainingBehaviour : MonoBehaviour {
 
     // Initialize a new Vector3 spring starting at position 0,0,0 and moving to 1,1,1
-    private readonly ChainableSpring<Vector3> spring = new(
-        new Vector3Spring(
-            config: SpringConfig.Create(tension: 600, friction: 30),
-            from: Vector3.zero,
-            to: Vector3.one));
+    private ChainableSpring<Vector3> spring;
 
     private void Start() {
+        spring = new(new Vector3Spring(
+            config: SpringConfig.Create(tension: 600, friction: 30),
+            from: new Vector3(-6.5f, -2.2f, -2f),
+            to: new Vector3(6.5f, 4f, -2f)));
+
         // One at a time the spring will transition to each destination
-        spring.To(Vector3.one * 2f);
-        spring.To(Vector3.one * -2f);
-        spring.To(Vector3.one * 4f);
-        spring.To(Vector3.one * -4f);
+        spring
+            .To(new Vector3(-9, 5, 0))
+            .To(new Vector3(4, -1, -4.6f))
+            .To(new Vector3(0, 2f, -6.7f))
+            .To(Vector3.zero);
     }
 
     private void Update() {
