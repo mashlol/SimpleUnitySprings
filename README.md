@@ -1,6 +1,7 @@
 # Simple Unity Springs
 
-Simple and free spring library for Unity, perfect for animating UI or game elements in your project.
+Simple and free spring library for Unity, perfect for animating UI or game
+elements in your project, heavily inspired by https://www.react-spring.dev/.
 
 ## Installation
 
