@@ -18,7 +18,10 @@ https://github.com/mashlol/SimpleUnitySprings
 public class MyBehaviour : MonoBehaviour {
 
     // Initialize a new Vector3 spring starting at position 0,0,0 and moving to 1,1,1
-    private readonly Vector3 spring = new(SpringConfig.Create(tension: 600, friction: 30), Vector3.zero, Vector3.one);
+    private readonly Vector3Spring spring = new(
+        config: SpringConfig.Create(tension: 600, friction: 30),
+        from: Vector3.zero,
+        to: Vector3.one);
 
     private void Update() {
         spring.Tick(Time.deltaTime);
@@ -34,7 +37,11 @@ public class MyBehaviour : MonoBehaviour {
 public class MySpringChainingBehaviour : MonoBehaviour {
 
     // Initialize a new Vector3 spring starting at position 0,0,0 and moving to 1,1,1
-    private readonly ChainableSpring spring = new(new Vector3Spring(SpringConfig.Create(tension: 600, friction: 30), Vector3.zero, Vector3.one));
+    private readonly ChainableSpring<Vector3> spring = new(
+        new Vector3Spring(
+            config: SpringConfig.Create(tension: 600, friction: 30),
+            from: Vector3.zero,
+            to: Vector3.one));
 
     private void Start() {
         // One at a time the spring will transition to each destination
