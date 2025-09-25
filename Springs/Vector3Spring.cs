@@ -5,16 +5,15 @@ namespace SimpleUnitySprings
 
     public class Vector3Spring : ISpring<Vector3>
     {
-
         private readonly Spring xSpring;
         private readonly Spring ySpring;
         private readonly Spring zSpring;
 
-        public Vector3Spring(SpringConfig config, Vector3 from, Vector3 to, float? precision = null)
+        public Vector3Spring(SpringConfig config, Vector3 from, Vector3 to)
         {
-            xSpring = new(config, from.x, to.x, precision);
-            ySpring = new(config, from.y, to.y, precision);
-            zSpring = new(config, from.z, to.z, precision);
+            xSpring = new(config, from.x, to.x);
+            ySpring = new(config, from.y, to.y);
+            zSpring = new(config, from.z, to.z);
         }
 
         public bool Tick(float deltaTime)

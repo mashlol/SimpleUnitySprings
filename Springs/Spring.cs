@@ -1,3 +1,4 @@
+using SimpleUnitySprings.SpringSolvers;
 using UnityEngine;
 
 namespace SimpleUnitySprings
@@ -5,30 +6,39 @@ namespace SimpleUnitySprings
 
     public class Spring : ISpring<float>
     {
-
-        private static readonly float SMALL_FLOAT = 0.00001f;
-        private static readonly float REST_VELOCITY_FACTOR = 0.1f;
-
         private readonly SpringConfig config;
-        private readonly float precision;
         private float delay;
 
         private float velocity = 0;
 
         private float to;
-        private float position;
+        private float from;
+        private float currentPosition;
 
         private bool isAnimating = false;
         private float animateStartTime = 0;
-
-
-        public Spring(SpringConfig config, float from, float to, float? precision = null)
+        
+        private SpringSolvers.AbstractSpringSolver springSolver = null;
+        
+        public Spring(SpringConfig config, float from, float to)
         {
-            this.precision = precision ?? SMALL_FLOAT;
-
             this.config = config;
-            position = from;
+            this.from = from;
+            currentPosition = from;
             To(to);
+            
+            if (config.solver == SpringConfig.SpringSolver.ReactSpring)
+            {
+                springSolver = new ReactSpringSolver(config);
+            }
+            else if (config.solver == SpringConfig.SpringSolver.ClosedForm)
+            {
+                springSolver = new ClosedFormSpringSolver(config);
+            }
+            else
+            {
+                throw new System.NotImplementedException($"{nameof(Spring)}: Solver type {config.solver} not yet implemented :(!");
+            }
         }
 
         public bool Tick(float deltaTime)
@@ -43,31 +53,28 @@ namespace SimpleUnitySprings
                 return false;
             }
 
-            var numSteps = Mathf.CeilToInt(deltaTime * 1000);
-            for (int i = 0; i < numSteps; i++)
+            if (IsChangeSmall(to, currentPosition, velocity))
             {
-                if (Mathf.Abs(velocity) <= precision * REST_VELOCITY_FACTOR && Mathf.Abs(to - position) <= precision)
-                {
-                    // Finished.
-                    isAnimating = false;
-                    return false;
-                }
-
-                float springForce = -config.tension * 0.000001f * (position - to);
-                float dampingForce = -config.friction * 0.001f * velocity;
-                float acceleration = (springForce + dampingForce) / config.mass;
-
-                velocity += acceleration;
-                position += velocity;
+                isAnimating = false;
+                return false;
             }
+            
+            springSolver.UpdateSpringPosition(deltaTime, to, from, ref currentPosition, ref velocity);
 
             return true;
         }
 
+        private static readonly float REST_VELOCITY_FACTOR = 0.1f;
+
+        private bool IsChangeSmall(float to, float position, float velocity)
+        {
+            return Mathf.Abs(velocity) <= config.precision * REST_VELOCITY_FACTOR && Mathf.Abs(to - position) <= config.precision;
+        }
+        
         public ISpring<float> To(float value, float delay = 0f)
         {
             to = value;
-            isAnimating = value != position;
+            isAnimating = value != currentPosition;
             animateStartTime = Time.time;
             this.delay = delay;
             return this;
@@ -75,14 +82,14 @@ namespace SimpleUnitySprings
 
         public ISpring<float> Instant(float value)
         {
-            position = value;
+            currentPosition = value;
             isAnimating = false;
             return this;
         }
 
         public float Get()
         {
-            return position;
+            return currentPosition;
         }
 
         public float GetVelocity()
