@@ -22,10 +22,10 @@ namespace SimpleUnitySprings
         
         /// <summary>
         /// If the solver is React-Spring, this is the number of iterations/seconds to use.
-        /// At least 60 (for 60fps) is recommended. Higher is more accurate, but slower.
         /// React Spring uses 1000 iterations by default.
+        /// Lower is faster, but more jittery.
         /// </summary>
-        public float reactSpringSolverIterations = 120;
+        public float reactSpringSolverIterations = 1000;
         
         public float tension = 600;
         public float friction = 30;
