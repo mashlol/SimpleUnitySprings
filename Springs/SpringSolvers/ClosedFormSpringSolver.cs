@@ -1,7 +1,7 @@
 using SimpleUnitySprings.SpringSolvers;
 using UnityEngine;
 
-namespace SimpleUnitySprings.SimpleUnitySprings.Springs.SpringSolvers
+namespace SimpleUnitySprings.SpringSolvers
 {
     /* Code obtained from: https://github.com/llamacademy/juicy-springs
      * Which was derived from: https://github.com/thammin/unity-spring
