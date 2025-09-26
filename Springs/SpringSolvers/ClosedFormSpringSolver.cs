@@ -3,8 +3,10 @@ using UnityEngine;
 namespace SimpleUnitySprings.SpringSolvers
 {
     /* Code obtained from: https://github.com/llamacademy/juicy-springs
-     * Modified by Jade
+     * Which was derived from: https://github.com/thammin/unity-spring
+     * Written by Thammin
      * Modified by Chris from LlamAcademy
+     * Modified by Jade
         MIT License
         Copyright (c) 2019 Paul Young
         Copyright (c) 2022 LlamAcademy
