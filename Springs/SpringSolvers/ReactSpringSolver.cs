@@ -3,31 +3,42 @@ using UnityEngine;
 namespace SimpleUnitySprings.SpringSolvers
 {
     /// <summary>
-    /// Spring solver present from React Spring. A.k.a. a Semi-Implicit Euler Spring Solver.
+    /// Spring solver present in react-spring.
     /// </summary>
-    public class ReactSpringSolver: AbstractSpringSolver
+    /// <remarks>
+    /// It's a Semi-Implicit Euler Spring Solver, default of 1000 iterations/second.
+    /// </remarks>
+    public class ReactSpringSolver: ISpringSolver
     {
-        float numStepsRemainder = 0.0f;
-
-        public ReactSpringSolver(SpringConfig springConfig) : base(springConfig){}
+        /// <summary>
+        /// The number of iterations/seconds to use. react-spring uses 1000 iterations by default.
+        /// Lower is faster, but more jittery. Values less than the current framerate will be very visible.
+        /// </summary>
+        private readonly float stepsPerSecond = 1000.0f;
+        private readonly float oneOverStepsPerSecond = 0.001f;
         
-        public override void UpdateSpringPosition(float deltaTime, float to, float from, ref float position, ref float velocity)
+        float numStepsRemainder = 0.0f;
+        
+        public ReactSpringSolver(float stepsPerSecond = 1000.0f)
         {
-            float samplesPerSecond = springConfig.reactSpringSolverIterations;
-            float oneOverSamplesPerSecond = 1.0f / samplesPerSecond;
-            
-            float numStepsFloat = deltaTime * samplesPerSecond + numStepsRemainder;
-            
+            this.stepsPerSecond = stepsPerSecond;
+            this.oneOverStepsPerSecond = 1.0f / stepsPerSecond;
+        }
+        
+        public void UpdateSpringPosition(float to, float from, float deltaTime, ref float position,
+            ref float velocity, SpringConfig springConfig)
+        {
+            float numStepsFloat = deltaTime * stepsPerSecond + numStepsRemainder;
             var numStepsInt = Mathf.FloorToInt(numStepsFloat);
             
             // Save a float of partial steps we couldn't fit into a full integer step this frame.
-            // This keeps it more accurate.
+            // This keeps the steps more accurate next frame.
             numStepsRemainder = numStepsFloat - numStepsInt;
             
             for (int i = 0; i < numStepsInt; i++)
             {
-                float springForce = -springConfig.tension * oneOverSamplesPerSecond * oneOverSamplesPerSecond * (position - to);
-                float dampingForce = -springConfig.friction * oneOverSamplesPerSecond * velocity;
+                float springForce = -springConfig.tension * oneOverStepsPerSecond * oneOverStepsPerSecond * (position - to);
+                float dampingForce = -springConfig.friction * oneOverStepsPerSecond * velocity;
                 float acceleration = (springForce + dampingForce) / springConfig.mass;
 
                 velocity += acceleration;

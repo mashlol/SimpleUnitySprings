@@ -2,7 +2,6 @@ using System.Collections.Generic;
 
 namespace SimpleUnitySprings
 {
-
     public class ChainableSpring<T> : ISpring<T>
     {
         private readonly ISpring<T> internalSpring;

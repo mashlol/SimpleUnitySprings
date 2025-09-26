@@ -1,3 +1,4 @@
+using SimpleUnitySprings.SpringSolvers;
 using UnityEngine;
 
 namespace SimpleUnitySprings
@@ -8,12 +9,14 @@ namespace SimpleUnitySprings
         private readonly Spring xSpring;
         private readonly Spring ySpring;
         private readonly Spring zSpring;
-
-        public Vector3Spring(SpringConfig config, Vector3 from, Vector3 to)
+        
+        public Vector3Spring(Vector3 from, Vector3 to, SpringConfig config ) : this(from, to, config, new ReactSpringSolver()) {}
+        
+        public Vector3Spring(Vector3 from, Vector3 to, SpringConfig config, ISpringSolver springSolver )
         {
-            xSpring = new(config, from.x, to.x);
-            ySpring = new(config, from.y, to.y);
-            zSpring = new(config, from.z, to.z);
+            xSpring = new(from.x, to.x, config, springSolver);
+            ySpring = new(from.y, to.y, config, springSolver);
+            zSpring = new(from.z, to.z, config, springSolver);
         }
 
         public bool Tick(float deltaTime)

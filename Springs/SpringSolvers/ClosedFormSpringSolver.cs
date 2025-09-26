@@ -15,21 +15,22 @@ namespace SimpleUnitySprings.SpringSolvers
 
         THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
     */
-    public class ClosedFormSpringSolver: AbstractSpringSolver
+    public class ClosedFormSpringSolver: ISpringSolver
     {
-        protected float springTime = 0.0f;
+        private float totalTime = 0.0f;
 
-        public ClosedFormSpringSolver(SpringConfig springConfig) : base(springConfig){}
+        public ClosedFormSpringSolver(){}
 
-        public override void UpdateSpringPosition(float deltaTime, float to, float from, ref float position, ref float velocity)
+        public void UpdateSpringPosition(float to, float from, float deltaTime, ref float position,
+            ref float velocity, SpringConfig springConfig)
         {
-            springTime += deltaTime;
+            totalTime += deltaTime;
 
-            float c = base.springConfig.friction;
-            float m = base.springConfig.mass;
-            float k = base.springConfig.tension;
+            float c = springConfig.friction;
+            float m = springConfig.mass;
+            float k = springConfig.tension;
             float v0 = -0.0f; // Initial velocity
-            float t = springTime;
+            float t = totalTime;
 
             float zeta = c / (2 * Mathf.Sqrt(k * m)); // damping ratio
             float omega0 = Mathf.Sqrt(k / m); // undamped angular frequency of the oscillator (rad/s)
