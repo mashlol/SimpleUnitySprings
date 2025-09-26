@@ -54,7 +54,7 @@ namespace SimpleUnitySprings
                 return false;
             }
             
-            springSolver.UpdateSpringPosition(to, from, deltaTime, ref position, ref velocity, config);
+            springSolver.UpdateSpringPosition(from, to, deltaTime, ref position, ref velocity, config);
 
             return true;
         }

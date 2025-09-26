@@ -1,6 +1,7 @@
+using SimpleUnitySprings.SpringSolvers;
 using UnityEngine;
 
-namespace SimpleUnitySprings.SpringSolvers
+namespace SimpleUnitySprings.SimpleUnitySprings.Springs.SpringSolvers
 {
     /* Code obtained from: https://github.com/llamacademy/juicy-springs
      * Which was derived from: https://github.com/thammin/unity-spring
@@ -23,7 +24,7 @@ namespace SimpleUnitySprings.SpringSolvers
 
         public ClosedFormSpringSolver(){}
 
-        public void UpdateSpringPosition(float to, float from, float deltaTime, ref float position,
+        public void UpdateSpringPosition(float from, float to, float deltaTime, ref float position,
             ref float velocity, SpringConfig springConfig)
         {
             totalTime += deltaTime;

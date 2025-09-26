@@ -25,7 +25,7 @@ namespace SimpleUnitySprings.SpringSolvers
             this.oneOverStepsPerSecond = 1.0f / stepsPerSecond;
         }
         
-        public void UpdateSpringPosition(float to, float from, float deltaTime, ref float position,
+        public void UpdateSpringPosition(float from, float to, float deltaTime, ref float position,
             ref float velocity, SpringConfig springConfig)
         {
             float numStepsFloat = deltaTime * stepsPerSecond + numStepsRemainder;
