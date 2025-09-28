@@ -1,3 +1,4 @@
+using SimpleUnitySprings.SpringSolvers;
 using UnityEngine;
 
 namespace SimpleUnitySprings
@@ -5,29 +6,33 @@ namespace SimpleUnitySprings
 
     public class Spring : ISpring<float>
     {
-
-        private static readonly float SMALL_FLOAT = 0.00001f;
+        
         private static readonly float REST_VELOCITY_FACTOR = 0.1f;
 
         private readonly SpringConfig config;
-        private readonly float precision;
         private float delay;
 
         private float velocity = 0;
 
         private float to;
+        private float from;
         private float position;
 
         private bool isAnimating = false;
         private float animateStartTime = 0;
-
-
-        public Spring(SpringConfig config, float from, float to, float? precision = null)
+        
+        private ISpringSolver springSolver = null;
+        
+        public Spring(float from, float to, SpringConfig config) : this(from, to, config, new ReactSpringSolver()) {}
+        
+        public Spring(float from, float to, SpringConfig config, ISpringSolver springSolver)
         {
-            this.precision = precision ?? SMALL_FLOAT;
+            this.from = from;
+            this.position = from;
 
             this.config = config;
-            position = from;
+            this.springSolver = springSolver;
+            
             To(to);
         }
 
@@ -43,27 +48,22 @@ namespace SimpleUnitySprings
                 return false;
             }
 
-            var numSteps = Mathf.CeilToInt(deltaTime * 1000);
-            for (int i = 0; i < numSteps; i++)
+            if (IsChangeSmall(to, position, velocity))
             {
-                if (Mathf.Abs(velocity) <= precision * REST_VELOCITY_FACTOR && Mathf.Abs(to - position) <= precision)
-                {
-                    // Finished.
-                    isAnimating = false;
-                    return false;
-                }
-
-                float springForce = -config.tension * 0.000001f * (position - to);
-                float dampingForce = -config.friction * 0.001f * velocity;
-                float acceleration = (springForce + dampingForce) / config.mass;
-
-                velocity += acceleration;
-                position += velocity;
+                isAnimating = false;
+                return false;
             }
+            
+            springSolver.UpdateSpringPosition(from, to, deltaTime, ref position, ref velocity, config);
 
             return true;
         }
-
+        
+        private bool IsChangeSmall(float to, float position, float velocity)
+        {
+            return Mathf.Abs(velocity) <= config.precision * REST_VELOCITY_FACTOR && Mathf.Abs(to - position) <= config.precision;
+        }
+        
         public ISpring<float> To(float value, float delay = 0f)
         {
             to = value;

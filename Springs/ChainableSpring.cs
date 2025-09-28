@@ -2,10 +2,8 @@ using System.Collections.Generic;
 
 namespace SimpleUnitySprings
 {
-
     public class ChainableSpring<T> : ISpring<T>
     {
-
         private readonly ISpring<T> internalSpring;
         private readonly Queue<(T, float)> destinationQueue = new();
 
