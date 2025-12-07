@@ -90,5 +90,11 @@ namespace SimpleUnitySprings
             return velocity;
         }
 
+        public ISpring<float> AddImpulse(float impulse)
+        {
+            velocity += impulse;
+            isAnimating = impulse != 0;
+            return this;
+        }
     }
 }

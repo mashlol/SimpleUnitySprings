@@ -54,5 +54,12 @@ namespace SimpleUnitySprings
             return new Vector3(xSpring.GetVelocity(), ySpring.GetVelocity(), zSpring.GetVelocity());
         }
 
+        public ISpring<Vector3> AddImpulse(Vector3 impulse)
+        {
+            xSpring.AddImpulse(impulse.x);
+            ySpring.AddImpulse(impulse.y);
+            zSpring.AddImpulse(impulse.z);
+            return this;
+        }
     }
 }

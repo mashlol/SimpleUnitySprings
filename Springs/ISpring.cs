@@ -15,5 +15,7 @@ namespace SimpleUnitySprings
 
         public T GetVelocity();
 
+        public ISpring<T> AddImpulse(T impulse);
+
     }
 }

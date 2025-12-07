@@ -50,5 +50,9 @@ namespace SimpleUnitySprings
             return internalSpring.GetVelocity();
         }
 
+        public ISpring<T> AddImpulse(T impulse)
+        {
+            return internalSpring.AddImpulse(impulse);
+        }
     }
 }
